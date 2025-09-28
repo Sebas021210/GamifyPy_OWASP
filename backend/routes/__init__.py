@@ -4,6 +4,7 @@ from .category_level import router as category_level_router
 from .lessons import router as lessons_router
 from .questions import router as questions_router
 from .insignias import router as insignias_router
+from .csrf import router as csrf_router
 
 __all__ = [
     "auth_router",
@@ -11,5 +12,6 @@ __all__ = [
     "category_level_router",
     "lessons_router",
     "questions_router",
-    "insignias_router"
+    "insignias_router",
+    "csrf_router",
 ]

@@ -35,6 +35,7 @@ function ExerciseDialog({ open, handleClose, ejercicio, updateEjercicios }) {
     const [codeAnswer, setCodeAnswer] = useState(ejercicio?.codigo_inicial || '');
     const [output, setOutput] = useState('');
     const [isRunning, setIsRunning] = useState(false);
+    const [csrfToken, setCsrfToken] = useState('');
     const editorRef = useRef(null);
 
     useEffect(() => {
@@ -84,6 +85,12 @@ function ExerciseDialog({ open, handleClose, ejercicio, updateEjercicios }) {
             }
         }
     }, [ejercicio, open]);
+
+    useEffect(() => {
+        fetch('http://localhost:8000/csrf/get-csrf-token')
+            .then((response) => response.json())
+            .then(data => setCsrfToken(data.csrf_token));
+    }, []);
 
     const handleCloseWithSave = () => {
         if (ejercicio?.tipo === 'grupo_opcion_multiple' && groupAnswers.length > 0 && !showResults) {
@@ -398,6 +405,7 @@ function ExerciseDialog({ open, handleClose, ejercicio, updateEjercicios }) {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        "x-csrf-token": csrfToken,
                     },
                     body: JSON.stringify({ respuesta: selectedOption }),
                 });
@@ -466,6 +474,7 @@ function ExerciseDialog({ open, handleClose, ejercicio, updateEjercicios }) {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    "x-csrf-token": csrfToken,
                 },
                 body: JSON.stringify({ respuesta: codeAnswer }),
             });

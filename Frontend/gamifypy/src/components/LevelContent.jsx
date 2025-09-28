@@ -17,6 +17,13 @@ const LevelContent = ({ id_nivel }) => {
     const [ejercicios, setEjercicios] = useState([]);
     const [openInsigniaDialog, setOpenInsigniaDialog] = useState(false);
     const [nuevasInsignias, setNuevasInsignias] = useState([]);
+    const [csrfToken, setCsrfToken] = useState('');
+
+    useEffect(() => {
+        fetch('http://localhost:8000/csrf/get-csrf-token')
+        .then((response) => response.json())
+        .then(data => setCsrfToken(data.csrf_token));
+    }, []);
 
     {/* Funciones para el manejo de Dialog */ }
     const handleOpenLessonsDialog = async (leccion) => {
@@ -66,6 +73,7 @@ const LevelContent = ({ id_nivel }) => {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    "x-csrf-token": csrfToken,
                 },
             });
 

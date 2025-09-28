@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, TextField, Alert, Box } from '@mui/material';
 
 export default function ResetPassword({ open, handleClose }) {
     const [email, setEmail] = useState("")
     const [alert, setAlert] = useState({ open: false, type: "success", message: "" });
+    const [csrfToken, setCsrfToken] = useState("");
+
+    useEffect(() => {
+        fetch('http://localhost:8000/csrf/get-csrf-token')
+            .then((response) => response.json())
+            .then(data => setCsrfToken(data.csrf_token));
+    }, []);
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
@@ -15,6 +22,7 @@ export default function ResetPassword({ open, handleClose }) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    "x-csrf-token": csrfToken,
                 },
                 body: JSON.stringify({
                     email: email,

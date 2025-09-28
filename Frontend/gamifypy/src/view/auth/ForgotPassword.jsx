@@ -19,6 +19,7 @@ function ForgotPassword() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [csrfToken, setCsrfToken] = useState('');
     const [values, setValues] = useState({
         password: '',
         confirmPassword: '',
@@ -32,6 +33,12 @@ function ForgotPassword() {
             return () => clearTimeout(timer);
         }
     }, [errorMessage]);
+
+    useEffect(() => {
+        fetch('http://localhost:8000/csrf/get-csrf-token')
+            .then((response) => response.json())
+            .then(data => setCsrfToken(data.csrf_token));
+    }, []);
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -60,6 +67,7 @@ function ForgotPassword() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    "x-csrf-token": csrfToken,
                 },
                 body: JSON.stringify({
                     token: token,

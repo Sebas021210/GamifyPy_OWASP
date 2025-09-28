@@ -23,6 +23,7 @@ function LessonsDialog({ open, handleClose, leccion, lessonContent, updateLeccio
     const [progress, setProgress] = useState(0);
     const [lessonCompleted, setLessonCompleted] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState(15); // eslint-disable-line no-unused-vars
+    const [csrfToken, setCsrfToken] = useState('');
 
     useEffect(() => {
         if (!open || !leccion) return;
@@ -33,7 +34,7 @@ function LessonsDialog({ open, handleClose, leccion, lessonContent, updateLeccio
             setProgress(0);
             setTimeRemaining(15);
 
-            const totalTime = 15000;
+            const totalTime = 3000;
             const interval = 50;
             const increment = (100 / totalTime) * interval;
 
@@ -71,6 +72,12 @@ function LessonsDialog({ open, handleClose, leccion, lessonContent, updateLeccio
         }
     }, [open, leccion]);
 
+    useEffect(() => {
+        fetch('http://localhost:8000/csrf/get-csrf-token')
+        .then((response) => response.json())
+        .then(data => setCsrfToken(data.csrf_token));
+    }, []);
+
     const handleSubmit = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -83,6 +90,7 @@ function LessonsDialog({ open, handleClose, leccion, lessonContent, updateLeccio
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
+                    "x-csrf-token": csrfToken,
                 },
             })
             if (!response.ok) {

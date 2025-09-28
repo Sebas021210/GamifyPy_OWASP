@@ -1,11 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: '127.0.0.1',
-    port: 5173
+    headers: {
+      "Content-Security-Policy": [
+        "default-src 'self';",
+        "script-src 'self';",
+        "style-src 'self' https://fonts.googleapis.com;",
+        "font-src 'self' https://fonts.gstatic.com;",
+        "img-src 'self' data:;",
+        "connect-src 'self' http://localhost:8000 ws://localhost:5173;",
+        "form-action 'self';",
+        "object-src 'none';",
+        "frame-ancestors 'none';"
+      ].join(" ")
+    }
   }
 })

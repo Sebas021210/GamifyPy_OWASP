@@ -9,10 +9,12 @@ class CSPMiddleware(BaseHTTPMiddleware):
         csp_policy = (
             "default-src 'self'; "
             "script-src 'self'; "
-            "style-src 'self'; "
-            "connect-src 'self' http://localhost:8000; "
+            "style-src 'self' https://fonts.googleapis.com; "
+            "font-src 'self' https://fonts.gstatic.com; "
             "img-src 'self' data:; "
-            "object-src 'none';"
+            "connect-src 'self' http://localhost:8000 ws://localhost:5173; "
+            "object-src 'none'; "
+            "frame-ancestors 'none'; "
         )
 
         response.headers["Content-Security-Policy"] = csp_policy

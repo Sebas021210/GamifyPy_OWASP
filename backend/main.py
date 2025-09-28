@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 import uvicorn
 from backend.routes import auth_router, user_router, category_level_router, lessons_router, questions_router, insignias_router, csrf_router
 from backend.middleware.csrf import CSRFMiddleware
+from backend.middleware.csp import CSPMiddleware
 
 app = FastAPI(title="GamifyPy")
 
@@ -17,6 +18,7 @@ app.add_middleware(
 )
 
 app.add_middleware(CSRFMiddleware)
+app.add_middleware(CSPMiddleware)
 
 app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 app.include_router(auth_router, prefix="/auth", tags=["auth"])

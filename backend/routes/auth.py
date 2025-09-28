@@ -36,7 +36,6 @@ async def login(login_request: LoginRequest, db=Depends(get_db)):
 
     response = JSONResponse(content={
         "access_token": access_token,
-        "refresh_token": refresh_token,
         "token_type": "bearer",
         "user": {
             "nombre": user.nombre,
@@ -44,6 +43,16 @@ async def login(login_request: LoginRequest, db=Depends(get_db)):
             "id": user.id,
         }
     })
+
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        secure=False,
+        samesite="lax",
+        max_age=7 * 24 * 60 * 60,
+        path="auth/refresh"
+    )
 
     return response
 
@@ -184,13 +193,23 @@ async def auth_callback(code: str, request: Request, db: Session = Depends(get_d
 
         query_data = {
             "access_token": access_token,
-            "refresh_token": refresh_token,
             "name": user.nombre,
             "email": user.email,
         }
 
         redirect_url = f"{frontend_callback_url}?{urlencode(query_data)}"
         redirect_response = RedirectResponse(url=redirect_url)
+        
+        redirect_response.set_cookie(
+            key="refresh_token",
+            value=refresh_token,
+            httponly=True,
+            secure=False,
+            samesite="lax",
+            max_age=7 * 24 * 60 * 60,
+            path="auth/refresh"
+        )
+
         return redirect_response
 
     except Exception:

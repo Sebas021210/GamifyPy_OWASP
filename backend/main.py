@@ -18,7 +18,7 @@ app.add_middleware(
 )
 
 app.add_middleware(CSRFMiddleware)
-app.add_middleware(CSPMiddleware)
+# app.add_middleware(CSPMiddleware)
 
 app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 app.include_router(auth_router, prefix="/auth", tags=["auth"])

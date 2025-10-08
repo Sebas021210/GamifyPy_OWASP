@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  /*
   server: {
     headers: {
       "Content-Security-Policy": [
@@ -18,4 +19,5 @@ export default defineConfig({
       ].join(" ")
     }
   }
+  */
 })

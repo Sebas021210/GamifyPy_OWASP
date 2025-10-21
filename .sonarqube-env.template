@@ -1,0 +1,13 @@
+# Archivo de configuración de entorno para SonarQube
+# Copiar este archivo a .sonarqube-env y completar con los valores reales
+
+# Token de autenticación de SonarQube
+# Generar en: http://localhost:9000/account/security
+SONAR_TOKEN=YOUR_SONARQUBE_TOKEN_HERE
+
+# URL del servidor SonarQube
+SONAR_HOST_URL=http://localhost:9000
+
+# Configuración del proyecto
+SONAR_PROJECT_KEY=gamifypy-owasp
+SONAR_PROJECT_NAME=GamifyPy OWASP

@@ -1,0 +1,83 @@
+version: "3.8"
+
+services:
+  # Base de datos PostgreSQL para SonarQube
+  sonarqube-db:
+    image: postgres:15-alpine
+    container_name: sonarqube-postgres
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+      POSTGRES_DB: sonarqube
+    volumes:
+      - sonarqube-db-data:/var/lib/postgresql/data
+    networks:
+      - sonarqube-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sonar"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Servidor SonarQube
+  sonarqube:
+    image: sonarqube:10-community
+    container_name: sonarqube
+    depends_on:
+      sonarqube-db:
+        condition: service_healthy
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://sonarqube-db:5432/sonarqube
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+      # Configuración de memoria para SonarQube
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - sonarqube-data:/opt/sonarqube/data
+      - sonarqube-extensions:/opt/sonarqube/extensions
+      - sonarqube-logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+    networks:
+      - sonarqube-network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9000/api/system/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 80s
+
+  # OWASP Dependency Check (opcional - ejecutar manualmente)
+  dependency-check:
+    image: owasp/dependency-check:latest
+    container_name: owasp-dependency-check
+    volumes:
+      - ./:/src
+      - dependency-check-data:/usr/share/dependency-check/data
+      - ./dependency-check-reports:/report
+    command: >
+      --scan /src
+      --format "ALL"
+      --project "GamifyPy_OWASP"
+      --out /report
+      --enableExperimental
+    networks:
+      - sonarqube-network
+    profiles:
+      - tools
+
+volumes:
+  sonarqube-db-data:
+    driver: local
+  sonarqube-data:
+    driver: local
+  sonarqube-extensions:
+    driver: local
+  sonarqube-logs:
+    driver: local
+  dependency-check-data:
+    driver: local
+
+networks:
+  sonarqube-network:
+    driver: bridge

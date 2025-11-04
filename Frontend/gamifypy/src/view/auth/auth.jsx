@@ -14,7 +14,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import Alert from '@mui/material/Alert';
 import ResetPassword from '../../components/ResetPassword';
 import './auth.css'
-import logger from '../utils/logger';
+import logger from '../../utils/logger';
 
 function Auth() {
     const navigate = useNavigate();

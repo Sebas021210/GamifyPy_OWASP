@@ -286,13 +286,15 @@ describe('Skills Helper Functions', () => {
   it('should handle null response', async () => {
     localStorage.setItem('token', 'test-token');
     
-    fetch.mockResolvedValueOnce({
+    globalThis.fetch.mockResolvedValueOnce({
       ok: true,
       json: async () => null
     });
 
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    render(<SkillsList />);
+    const { container } = render(<SkillsList />);
+    
+    expect(container).toBeTruthy();
     consoleSpy.mockRestore();
   });
 

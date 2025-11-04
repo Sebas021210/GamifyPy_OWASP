@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LevelContent from "../../components/LevelContent";
 import './LevelView.css'
-import logger from '../utils/logger';
+import logger from '../../utils/logger';
 
 function LevelView() {
     const { levelId } = useParams();

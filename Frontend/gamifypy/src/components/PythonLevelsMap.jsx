@@ -1,5 +1,4 @@
 ﻿import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 import { Lock, Star, Play, Trophy, Zap, Code, Brain, Rocket } from 'lucide-react';
 import IconButton from '@mui/material/IconButton';
@@ -455,8 +454,5 @@ const PythonLevelsMap = () => {
         </div>
     );
 };
-
-// PythonLevelsMap no recibe props
-PythonLevelsMap.propTypes = {};
 
 export default PythonLevelsMap;

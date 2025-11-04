@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import PropTypes from 'prop-types';
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const GoogleCallback = () => {
@@ -21,8 +20,5 @@ const GoogleCallback = () => {
 
     return <p>Conectando con tu cuenta de Google...</p>;
 };
-
-// GoogleCallback no recibe props
-GoogleCallback.propTypes = {};
 
 export default GoogleCallback;

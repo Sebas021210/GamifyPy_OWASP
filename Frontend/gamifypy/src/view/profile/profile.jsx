@@ -8,7 +8,7 @@ import Insignias from "../../components/InsigniaCarousel";
 import Skills from "../../components/SkillsList";
 import LoadingBackdrop from "../../components/LoadingBackdrop";
 import './profile.css'
-import logger from '../utils/logger';
+import logger from '../../utils/logger';
 
 function Profile() {
     const navigate = useNavigate();

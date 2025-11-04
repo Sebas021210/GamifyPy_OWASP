@@ -21,3 +21,4 @@ describe('App Component', () => {
         expect(module.default).not.toBeNull();
     });
 });
+

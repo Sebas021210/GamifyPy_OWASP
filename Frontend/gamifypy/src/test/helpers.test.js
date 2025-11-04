@@ -172,3 +172,196 @@ describe('Data Transformation Helpers', () => {
         expect(doubled).toEqual([2, 4, 6, 8, 10]);
     });
 });
+
+describe('String Utilities', () => {
+    const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    const truncate = (str, length) => str.length > length ? str.slice(0, length) + '...' : str;
+    const slugify = (str) => str.toLowerCase().replace(/\s+/g, '-');
+
+    it('should capitalize strings', () => {
+        expect(capitalize('hello')).toBe('Hello');
+        expect(capitalize('WORLD')).toBe('World');
+        expect(capitalize('tEsT')).toBe('Test');
+    });
+
+    it('should truncate long strings', () => {
+        expect(truncate('Hello World', 5)).toBe('Hello...');
+        expect(truncate('Short', 10)).toBe('Short');
+        expect(truncate('Test String', 4)).toBe('Test...');
+    });
+
+    it('should create slugs', () => {
+        expect(slugify('Hello World')).toBe('hello-world');
+        expect(slugify('Test String')).toBe('test-string');
+        expect(slugify('Multiple   Spaces')).toBe('multiple-spaces');
+    });
+
+    it('should handle empty strings', () => {
+        expect(capitalize('')).toBe('');
+        expect(truncate('', 5)).toBe('');
+        expect(slugify('')).toBe('');
+    });
+
+    it('should handle single character', () => {
+        expect(capitalize('a')).toBe('A');
+        expect(truncate('a', 1)).toBe('a');
+        expect(slugify('a')).toBe('a');
+    });
+});
+
+describe('Number Utilities', () => {
+    const isEven = (n) => n % 2 === 0;
+    const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+    const percentage = (value, total) => total === 0 ? 0 : (value / total) * 100;
+
+    it('should check even numbers', () => {
+        expect(isEven(2)).toBe(true);
+        expect(isEven(4)).toBe(true);
+        expect(isEven(1)).toBe(false);
+        expect(isEven(3)).toBe(false);
+        expect(isEven(0)).toBe(true);
+    });
+
+    it('should clamp numbers', () => {
+        expect(clamp(5, 0, 10)).toBe(5);
+        expect(clamp(-5, 0, 10)).toBe(0);
+        expect(clamp(15, 0, 10)).toBe(10);
+        expect(clamp(7, 5, 8)).toBe(7);
+    });
+
+    it('should calculate percentages', () => {
+        expect(percentage(50, 100)).toBe(50);
+        expect(percentage(25, 100)).toBe(25);
+        expect(percentage(75, 100)).toBe(75);
+        expect(percentage(10, 0)).toBe(0);
+    });
+
+    it('should handle zero values', () => {
+        expect(isEven(0)).toBe(true);
+        expect(clamp(0, -10, 10)).toBe(0);
+        expect(percentage(0, 100)).toBe(0);
+    });
+
+    it('should handle negative numbers', () => {
+        expect(isEven(-2)).toBe(true);
+        expect(clamp(-5, -10, -1)).toBe(-5);
+        expect(percentage(-10, 100)).toBe(-10);
+    });
+});
+
+describe('Array Utilities', () => {
+    const unique = (arr) => [...new Set(arr)];
+    const chunk = (arr, size) => {
+        const chunks = [];
+        for (let i = 0; i < arr.length; i += size) {
+            chunks.push(arr.slice(i, i + size));
+        }
+        return chunks;
+    };
+    const flatten = (arr) => arr.reduce((acc, val) => acc.concat(val), []);
+
+    it('should get unique values', () => {
+        expect(unique([1, 2, 2, 3, 3, 3])).toEqual([1, 2, 3]);
+        expect(unique(['a', 'b', 'a', 'c'])).toEqual(['a', 'b', 'c']);
+        expect(unique([1, 1, 1])).toEqual([1]);
+    });
+
+    it('should chunk arrays', () => {
+        expect(chunk([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
+        expect(chunk([1, 2, 3], 1)).toEqual([[1], [2], [3]]);
+        expect(chunk([1, 2, 3, 4], 2)).toEqual([[1, 2], [3, 4]]);
+    });
+
+    it('should flatten arrays', () => {
+        expect(flatten([[1, 2], [3, 4]])).toEqual([1, 2, 3, 4]);
+        expect(flatten([[1], [2], [3]])).toEqual([1, 2, 3]);
+        expect(flatten([['a', 'b'], ['c']])).toEqual(['a', 'b', 'c']);
+    });
+
+    it('should handle empty arrays', () => {
+        expect(unique([])).toEqual([]);
+        expect(chunk([], 2)).toEqual([]);
+        expect(flatten([])).toEqual([]);
+    });
+
+    it('should handle single element', () => {
+        expect(unique([1])).toEqual([1]);
+        expect(chunk([1], 2)).toEqual([[1]]);
+        expect(flatten([[1]])).toEqual([1]);
+    });
+});
+
+describe('Object Utilities', () => {
+    const pick = (obj, keys) => {
+        const result = {};
+        keys.forEach(key => {
+            if (key in obj) result[key] = obj[key];
+        });
+        return result;
+    };
+
+    const omit = (obj, keys) => {
+        const result = { ...obj };
+        keys.forEach(key => delete result[key]);
+        return result;
+    };
+
+    it('should pick properties', () => {
+        const obj = { a: 1, b: 2, c: 3 };
+        expect(pick(obj, ['a', 'b'])).toEqual({ a: 1, b: 2 });
+        expect(pick(obj, ['c'])).toEqual({ c: 3 });
+        expect(pick(obj, [])).toEqual({});
+    });
+
+    it('should omit properties', () => {
+        const obj = { a: 1, b: 2, c: 3 };
+        expect(omit(obj, ['a'])).toEqual({ b: 2, c: 3 });
+        expect(omit(obj, ['b', 'c'])).toEqual({ a: 1 });
+        expect(omit(obj, [])).toEqual({ a: 1, b: 2, c: 3 });
+    });
+
+    it('should handle missing keys', () => {
+        const obj = { a: 1, b: 2 };
+        expect(pick(obj, ['a', 'x'])).toEqual({ a: 1 });
+        expect(omit(obj, ['x', 'y'])).toEqual({ a: 1, b: 2 });
+    });
+
+    it('should handle empty objects', () => {
+        expect(pick({}, ['a'])).toEqual({});
+        expect(omit({}, ['a'])).toEqual({});
+    });
+});
+
+describe('Date Utilities', () => {
+    const formatDate = (date) => {
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    };
+
+    const isToday = (date) => {
+        const today = new Date();
+        return date.getDate() === today.getDate() &&
+               date.getMonth() === today.getMonth() &&
+               date.getFullYear() === today.getFullYear();
+    };
+
+    it('should format dates', () => {
+        const date = new Date('2024-01-15');
+        expect(formatDate(date)).toMatch(/\d{4}-\d{2}-\d{2}/);
+    });
+
+    it('should check if date is today', () => {
+        const today = new Date();
+        expect(isToday(today)).toBe(true);
+        
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        expect(isToday(yesterday)).toBe(false);
+    });
+
+    it('should handle different months', () => {
+        const date1 = new Date('2024-01-15');
+        const date2 = new Date('2024-12-25');
+        expect(formatDate(date1)).toContain('01');
+        expect(formatDate(date2)).toContain('12');
+    });
+});

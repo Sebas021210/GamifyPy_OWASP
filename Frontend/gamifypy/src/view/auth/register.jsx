@@ -6,7 +6,7 @@ import Alert from '@mui/material/Alert';
 import TokenVerificationModal from '../../components/TokenVerificationModal';
 import TermsPrivacyModal from '../../components/TermsPrivacyModal';
 import './auth.css'
-import logger from '../utils/logger';
+import logger from '../../utils/logger';
 
 function Register() {
     const navigate = useNavigate();

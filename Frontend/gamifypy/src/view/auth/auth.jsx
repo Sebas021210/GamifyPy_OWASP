@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -14,6 +14,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import Alert from '@mui/material/Alert';
 import ResetPassword from '../../components/ResetPassword';
 import './auth.css'
+import logger from '../utils/logger';
 
 function Auth() {
     const navigate = useNavigate();
@@ -66,7 +67,7 @@ function Auth() {
             localStorage.setItem("refresh_token", data.refresh_token);
             navigate("/levels", { replace: true })
         } catch (error) {
-            console.error('Error al iniciar sesión:', error);
+            logger.error('Error al iniciar sesión:', error);
             setError(true);
             setValues({ email: '', password: '' });
         }

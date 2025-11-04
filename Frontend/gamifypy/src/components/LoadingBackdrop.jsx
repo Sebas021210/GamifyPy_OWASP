@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -17,3 +18,7 @@ export default function LoadingBackdrop({ loading }) {
         </div>
     );
 }
+
+LoadingBackdrop.propTypes = {
+    loading: PropTypes.bool.isRequired
+};

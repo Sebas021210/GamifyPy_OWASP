@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 import Box from '@mui/material/Box'
 import Dialog from '@mui/material/Dialog';
 import AppBar from '@mui/material/AppBar';
@@ -13,6 +14,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Slide from '@mui/material/Slide';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import logger from '../utils/logger';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -98,7 +100,7 @@ function LessonsDialog({ open, handleClose, leccion, lessonContent, updateLeccio
             }
             updateLecciones(leccion.id);
         } catch (error) {
-            console.error('Error al completar la lección:', error);
+            logger.error('Error al completar la lección:', error);
         }
     }
 
@@ -363,5 +365,19 @@ function LessonsDialog({ open, handleClose, leccion, lessonContent, updateLeccio
         </div>
     );
 }
+
+LessonsDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    leccion: PropTypes.shape({
+        id: PropTypes.number,
+        titulo: PropTypes.string,
+        completada: PropTypes.bool
+    }),
+    lessonContent: PropTypes.string,
+    updateLecciones: PropTypes.func.isRequired,
+    onNextLesson: PropTypes.func,
+    hasNextLesson: PropTypes.bool
+};
 
 export default LessonsDialog;

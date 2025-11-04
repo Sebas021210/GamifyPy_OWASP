@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
+﻿import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
 
 export default function TermsPrivacyModal({ open, handleClose, title, content }) {
     return (
@@ -55,3 +55,10 @@ export default function TermsPrivacyModal({ open, handleClose, title, content })
         </Dialog>
     );
 }
+
+TermsPrivacyModal.propTypes = {
+    open: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired
+};

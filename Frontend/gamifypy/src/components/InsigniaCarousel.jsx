@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+﻿import React, { useEffect } from "react";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Carousel } from 'primereact/carousel';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
+import logger from '../utils/logger';
 
 const responsiveOptions = [
     {
@@ -52,7 +53,7 @@ function Insignias() {
                 const data = await response.json();
                 return data;
             } catch (error) {
-                console.error("Error fetching skills data:", error);
+                logger.error("Error fetching skills data:", error);
                 return [];
             }
         };

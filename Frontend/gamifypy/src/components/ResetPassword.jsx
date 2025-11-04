@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, TextField, Alert, Box } from '@mui/material';
+import logger from '../utils/logger';
 
 export default function ResetPassword({ open, handleClose }) {
     const [email, setEmail] = useState("")
@@ -45,7 +47,7 @@ export default function ResetPassword({ open, handleClose }) {
                 setAlert({ ...alert, open: false });
             }, 3000);
         } catch (error) {
-            console.error(error.message)
+            logger.error(error.message)
 
             setAlert({
                 open: true,
@@ -168,3 +170,8 @@ export default function ResetPassword({ open, handleClose }) {
         </>
     );
 }
+
+ResetPassword.propTypes = {
+    open: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired
+};

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -8,6 +8,7 @@ import Insignias from "../../components/InsigniaCarousel";
 import Skills from "../../components/SkillsList";
 import LoadingBackdrop from "../../components/LoadingBackdrop";
 import './profile.css'
+import logger from '../utils/logger';
 
 function Profile() {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ function Profile() {
             setUserData(dataMe);
             setLoading(false);
         } catch (error) {
-            console.error("Error fetching user data:", error);
+            logger.error("Error fetching user data:", error);
             setLoading(false);
         }
     };
@@ -64,7 +65,7 @@ function Profile() {
             setProgresoData(dataProgreso);
             setLoading(false);
         } catch (error) {
-            console.error("Error fetching progreso data:", error);
+            logger.error("Error fetching progreso data:", error);
             setLoading(false);
         }
     };

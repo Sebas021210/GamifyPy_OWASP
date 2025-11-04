@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LevelContent from "../../components/LevelContent";
 import './LevelView.css'
+import logger from '../utils/logger';
 
 function LevelView() {
     const { levelId } = useParams();
@@ -28,7 +29,7 @@ function LevelView() {
                 setLevelTitle(data.nombre);
                 setLevelDescription(data.descripcion);
             } catch (error) {
-                console.error('Error fetching level data:', error);
+                logger.error('Error fetching level data:', error);
             }
         }
         getLevelInfo();

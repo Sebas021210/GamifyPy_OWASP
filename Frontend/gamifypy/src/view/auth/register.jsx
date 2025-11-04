@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Box, Paper, TextField, IconButton, InputAdornment, Button, Typography, Checkbox } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -6,6 +6,7 @@ import Alert from '@mui/material/Alert';
 import TokenVerificationModal from '../../components/TokenVerificationModal';
 import TermsPrivacyModal from '../../components/TermsPrivacyModal';
 import './auth.css'
+import logger from '../utils/logger';
 
 function Register() {
     const navigate = useNavigate();
@@ -67,7 +68,7 @@ function Register() {
     const handleSendPin = async () => {
         if (!values.email || !values.username || !values.password || !values.confirmPassword) {
             setErrorMessage('Por favor, completa todos los campos.');
-            console.error('❌ Error: Todos los campos son obligatorios');
+            logger.error('❌ Error: Todos los campos son obligatorios');
             return;
         }
 
@@ -93,7 +94,7 @@ function Register() {
             }
             setIsModalOpen(true);
         } catch (error) {
-            console.error('Error al enviar el PIN:', error);
+            logger.error('Error al enviar el PIN:', error);
             setErrorMessage(error.message || 'Error al enviar el PIN');
             return;
         }
@@ -144,7 +145,7 @@ function Register() {
             setIsModalOpen(false);
             navigate("/auth", { replace: true });
         } catch (error) {
-            console.error('❌ Error durante la verificación o el registro:', error.message);
+            logger.error('❌ Error durante la verificación o el registro:', error.message);
             setErrorMessage(error.message || 'Error durante la verificación o el registro');
         }
     };
@@ -157,7 +158,7 @@ function Register() {
                 setTermsModalContent(text);
             })
             .catch((error) => {
-                console.error('Error al cargar los términos:', error);
+                logger.error('Error al cargar los términos:', error);
                 setTermsModalContent('Error al cargar los Términos y Condiciones.');
             });
         setTermsModalOpen(true);
@@ -171,7 +172,7 @@ function Register() {
                 setTermsModalContent(text);
             })
             .catch((error) => {
-                console.error('Error al cargar las politicas:', error);
+                logger.error('Error al cargar las politicas:', error);
                 setTermsModalContent('Error al cargar las políticas de privacidad.');
             });
         setTermsModalOpen(true);

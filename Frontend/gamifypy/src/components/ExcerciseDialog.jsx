@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+﻿import React, { useState, useRef, useEffect } from "react";
+import PropTypes from 'prop-types';
 import Dialog from '@mui/material/Dialog';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -21,6 +22,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Editor from '@monaco-editor/react';
 import Slide from '@mui/material/Slide';
+import logger from '../utils/logger';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -418,7 +420,7 @@ function ExerciseDialog({ open, handleClose, ejercicio, updateEjercicios }) {
                     a.questionId === currentQuestion.id ? { ...a, feedback: data.retroalimentacion } : a
                 ));
             } catch (error) {
-                console.error("Error guardando intento:", error);
+                logger.error("Error guardando intento:", error);
             }
         }
     };
@@ -819,5 +821,27 @@ function ExerciseDialog({ open, handleClose, ejercicio, updateEjercicios }) {
         </div>
     );
 }
+
+ExerciseDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    ejercicio: PropTypes.shape({
+        id: PropTypes.number,
+        tipo: PropTypes.string,
+        codigo_inicial: PropTypes.string,
+        intento_realizado: PropTypes.bool,
+        preguntas: PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.number,
+                pregunta: PropTypes.string,
+                opciones: PropTypes.arrayOf(PropTypes.string),
+                respuesta_correcta: PropTypes.string,
+                intento_realizado: PropTypes.bool,
+                respuesta_usuario: PropTypes.string
+            })
+        )
+    }),
+    updateEjercicios: PropTypes.func.isRequired
+};
 
 export default ExerciseDialog;

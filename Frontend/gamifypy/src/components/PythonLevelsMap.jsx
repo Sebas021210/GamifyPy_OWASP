@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Lock, Star, Play, Trophy, Zap, Code, Brain, Rocket } from 'lucide-react';
 import IconButton from '@mui/material/IconButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LoadingBackdrop from './LoadingBackdrop';
+import logger from '../utils/logger';
 
 const PythonLevelsMap = () => {
     const navigate = useNavigate();
@@ -54,7 +55,7 @@ const PythonLevelsMap = () => {
 
                 setLoading(false);
             } catch (error) {
-                console.error("Error fetching levels:", error);
+                logger.error("Error fetching levels:", error);
                 setLoading(false);
             }
         }

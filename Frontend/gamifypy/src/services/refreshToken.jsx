@@ -1,3 +1,5 @@
+import logger from '../utils/logger';
+
 export async function refreshAccessToken() {
     try {
         const refreshToken = localStorage.getItem("refresh_token");
@@ -15,7 +17,7 @@ export async function refreshAccessToken() {
         localStorage.setItem("token", data.access_token);
         return data.access_token;
     } catch (err) {
-        console.error("Error al refrescar token:", err);
+        logger.error("Error al refrescar token:", err);
         return null;
     }
 }

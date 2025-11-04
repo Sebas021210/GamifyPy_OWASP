@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Zap } from 'lucide-react';
+import logger from '../utils/logger';
 
 const generateSkills = async () => {
     try {
@@ -21,7 +22,7 @@ const generateSkills = async () => {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error("Error fetching skills data:", error);
+        logger.error("Error fetching skills data:", error);
         return [];
     }
 };
@@ -211,10 +212,10 @@ function Skills() {
                     setSkills(skillsData);
                     setPositions(generatePositions(skillsData.length));
                 } else {
-                    console.error('La respuesta de la API no contiene un array en "habilidades":', response);
+                    logger.error('La respuesta de la API no contiene un array en "habilidades":', response);
                 }
             } catch (error) {
-                console.error('Error fetching skills:', error);
+                logger.error('Error fetching skills:', error);
             }
         };
 

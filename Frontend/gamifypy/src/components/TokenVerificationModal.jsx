@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, DialogContentText } from '@mui/material';
 import { InputOtp } from 'primereact/inputotp';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
@@ -63,3 +63,9 @@ export default function TokenVerificationModal({ open, handleClose, handleVerify
         </Dialog>
     );
 }
+
+TokenVerificationModal.propTypes = {
+    open: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    handleVerify: PropTypes.func.isRequired
+};

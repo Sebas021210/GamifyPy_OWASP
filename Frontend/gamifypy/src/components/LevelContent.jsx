@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronRight, Play, BookOpen, Code, CheckCircle, Lock } from 'lucide-react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import LessonsDialog from './LessonsDialog';
 import ExerciseDialog from './ExcerciseDialog';
+import logger from '../utils/logger';
 import './LevelContent.css';
 
 const LevelContent = ({ id_nivel }) => {
@@ -42,7 +43,7 @@ const LevelContent = ({ id_nivel }) => {
             setLessonsContent(data);
             setOpenLessonsDialog(true);
         } catch (error) {
-            console.error('Error fetching lesson content:', error);
+            logger.error('Error fetching lesson content:', error);
         }
     }
 
@@ -85,7 +86,7 @@ const LevelContent = ({ id_nivel }) => {
                 }
             }
         } catch (error) {
-            console.error("Error al verificar insignias:", error);
+            logger.error("Error al verificar insignias:", error);
         }
     };
 
@@ -111,7 +112,7 @@ const LevelContent = ({ id_nivel }) => {
                 const data = await response.json();
                 setLecciones(data.lecciones);
             } catch (error) {
-                console.error('Error fetching lessons data:', error);
+                logger.error('Error fetching lessons data:', error);
             }
         }
         getLecciones();
@@ -160,7 +161,7 @@ const LevelContent = ({ id_nivel }) => {
                     setLessonsContent(data);
                     setLeccionSeleccionada(nextLesson);
                 } catch (error) {
-                    console.error('Error fetching next lesson content:', error);
+                    logger.error('Error fetching next lesson content:', error);
                 }
             }
         }

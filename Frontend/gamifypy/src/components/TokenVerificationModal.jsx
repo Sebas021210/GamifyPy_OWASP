@@ -1,4 +1,5 @@
 ﻿import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, DialogContentText } from '@mui/material';
 import { InputOtp } from 'primereact/inputotp';
 import 'primereact/resources/themes/lara-light-blue/theme.css';

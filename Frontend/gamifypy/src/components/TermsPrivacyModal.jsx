@@ -1,4 +1,6 @@
-﻿import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
+﻿import React from 'react';
+import PropTypes from 'prop-types';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
 
 export default function TermsPrivacyModal({ open, handleClose, title, content }) {
     return (

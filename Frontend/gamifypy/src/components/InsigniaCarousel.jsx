@@ -1,4 +1,5 @@
 ﻿import React, { useEffect } from "react";
+import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Carousel } from 'primereact/carousel';
@@ -136,5 +137,8 @@ function Insignias() {
         </>
     );
 }
+
+// Insignias no recibe props
+Insignias.propTypes = {};
 
 export default Insignias;

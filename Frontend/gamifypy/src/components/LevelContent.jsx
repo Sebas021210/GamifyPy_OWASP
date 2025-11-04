@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { ChevronDown, ChevronRight, Play, BookOpen, Code, CheckCircle, Lock } from 'lucide-react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import LessonsDialog from './LessonsDialog';
@@ -690,6 +691,10 @@ const LevelContent = ({ id_nivel }) => {
             </Dialog>
         </div>
     );
+};
+
+LevelContent.propTypes = {
+    id_nivel: PropTypes.number.isRequired,
 };
 
 export default LevelContent;

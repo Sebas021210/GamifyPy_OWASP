@@ -1,0 +1,12 @@
+heartbeat.monitors:
+  - type: http
+    id: fastapi-health
+    name: FastAPI Health Monitor
+    schedule: "@every 5s"
+    urls: 
+      - "http://host.docker.internal:8000/ping"
+    check.response:
+      status: 200
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]

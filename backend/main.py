@@ -2,11 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import uvicorn
-from backend.routes import auth_router, user_router, category_level_router, lessons_router, questions_router, insignias_router, csrf_router
-from backend.middleware.csrf import CSRFMiddleware
-from backend.middleware.csp import CSPMiddleware
+from backend.middleware.logging_middleware import log_requests
+from backend.routes import auth_router, user_router, category_level_router, lessons_router, questions_router, insignias_router
 
 app = FastAPI(title="GamifyPy")
+
+app.middleware("http")(log_requests)
 
 origins = ["*"]
 app.add_middleware(
@@ -17,9 +18,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_middleware(CSRFMiddleware)
-# app.add_middleware(CSPMiddleware)
-
 app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(user_router, prefix="/user", tags=["user"])
@@ -27,7 +25,11 @@ app.include_router(category_level_router, prefix="/category-level", tags=["categ
 app.include_router(lessons_router, prefix="/lessons", tags=["lessons"])
 app.include_router(questions_router, prefix="/questions", tags=["questions"])
 app.include_router(insignias_router, prefix="/insignias", tags=["insignias"])
-app.include_router(csrf_router, prefix="/csrf", tags=["csrf"])
+
+@app.get("/ping")
+def ping():
+    return {"status": "ok"}
+
 
 if __name__ == "__main__":
     uvicorn.run(

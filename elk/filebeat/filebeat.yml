@@ -1,0 +1,16 @@
+filebeat.inputs:
+  - type: filestream
+    id: fastapi-logs
+    paths:
+      - /usr/share/logs/*.log
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+  index: "fastapi-logs-%{+yyyy.MM.dd}"
+
+setup.template.name: "fastapi-logs"
+setup.template.pattern: "fastapi-logs-*"
+setup.ilm.enabled: false
+
+setup.kibana:
+  host: "kibana:5601"

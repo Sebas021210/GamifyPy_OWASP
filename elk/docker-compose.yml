@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+    networks:
+      - elk
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.13.0
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk
+
+  filebeat:
+    build:
+      context: ./filebeat
+    image: custom-filebeat:8.13.0
+    user: root
+    volumes:
+      - ../backend/logs:/usr/share/logs
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk
+
+  heartbeat:
+    build:
+      context: ./heartbeat
+    image: custom-heartbeat:8.13.0
+    user: root
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk
+
+networks:
+  elk:
+    driver: bridge

@@ -39,17 +39,10 @@ class CSRFMiddleware(BaseHTTPMiddleware):
             if not any(path.startswith(exc) for exc in UNPROTECTED_PATHS):
                 csrf_header = request.headers.get("x-csrf-token")
                 if not csrf_header or csrf_header not in csrf_tokens:
-                    logger.warning(f"❌ Bloqueado CSRF en {method} {path}")
                     return JSONResponse(
                         status_code=403,
                         content={"detail": "CSRF token inválido o ausente"},
                     )
-                else:
-                    logger.info(f"✅ CSRF validado en {method} {path}")
-            else:
-                logger.info(f"⚠️ CSRF ignorado en {method} {path} (unprotected)")
-        else:
-            logger.info(f"➡️ GET u otro método seguro en {method} {path} (no valida CSRF)")
 
         response = await call_next(request)
         return response

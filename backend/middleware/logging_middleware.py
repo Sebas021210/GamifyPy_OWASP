@@ -20,6 +20,8 @@ async def log_requests(request: Request, call_next):
 
     duration = (time.time() - start_time) * 1000
 
+    log_level = "error" if response.status_code >= 400 else "info"
+
     log_data = {
         "@timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "service.name": "fastapi-backend",
@@ -27,8 +29,12 @@ async def log_requests(request: Request, call_next):
         "url.path": request.url.path,
         "http.response.status_code": response.status_code,
         "event.duration": duration,
-        "log.level": "info",
+        "log.level": log_level
     }
 
-    logger.info(json.dumps(log_data))
+    if log_level == "error":
+        logger.error(json.dumps(log_data))
+    else:
+        logger.info(json.dumps(log_data))
+
     return response

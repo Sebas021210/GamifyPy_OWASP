@@ -3,6 +3,11 @@ filebeat.inputs:
     id: fastapi-logs
     paths:
       - /usr/share/logs/*.log
+    parsers:
+      - ndjson:
+          target: ""
+          overwrite_keys: true
+          add_error_key: true
 
 output.elasticsearch:
   hosts: ["http://elasticsearch:9200"]
